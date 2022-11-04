@@ -5,13 +5,14 @@ module Exercise
       # film["name"], film["rating_kinopoisk"], film["rating_imdb"],
       # film["genres"], film["year"], film["access_level"], film["country"]
       def find_comma_in_string(string_el)
-        return nil if string_el == nil
-        return (string_el.include? ',') ? string_el : nil
+        if string_el
+          return (string_el.include? ',')
+        end
       end
 
       def rating(array)
-        filtered_films = array.map{|film| find_comma_in_string(film['country']) ? film : nil}.compact
-        ratings_of_films = filtered_films.map{|film| film["rating_kinopoisk"].to_f == 0 ? nil : film["rating_kinopoisk"].to_f}.compact
+        filtered_films = array.filter{|film| find_comma_in_string(film['country'])}
+        ratings_of_films = filtered_films.map{|film| film["rating_kinopoisk"].to_f}.filter{|rating| rating != 0.0}
         return ratings_of_films.inject(:+)/ratings_of_films.length
       end 
 
