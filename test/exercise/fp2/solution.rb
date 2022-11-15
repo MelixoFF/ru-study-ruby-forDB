@@ -3,7 +3,7 @@ module Exercise
     class MyArray < Array
       # Использовать стандартные функции массива для решения задач нельзя.
       # Использовать свои написанные функции для реализации следующих - можно.
-
+      
       # Написать свою функцию my_each
       def my_each(&block)
         for element in self
@@ -12,22 +12,14 @@ module Exercise
       end
       # Написать свою функцию my_map
       def my_map(&block); 
-        new_array = MyArray.new
-        for element in self
-          new_array.push(block.call(element))
-        end
-        return new_array
+        func = ->(accum, element) { MyArray.new(accum+[block.call(element)]) }
+        return self.my_reduce(working_value = [], &func)
       end
 
       # Написать свою функцию my_compact
       def my_compact(); 
-        new_array = MyArray.new
-        for element in self
-           if element != nil
-              new_array.push(element)
-           end
-        end
-        return new_array
+        func = ->(accum, element) { element != nil ? MyArray.new(accum+[element]) : accum  }
+        return self.my_reduce(working_value = [], &func)
       end
 
       # Написать свою функцию my_reduce
